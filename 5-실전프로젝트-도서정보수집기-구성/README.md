@@ -16,6 +16,11 @@
   - [1. FastAPI, Uvicorn 설치](#1-fastapi-uvicorn-설치)
   - [2. FastAPI 서버 생성 및 실행](#2-fastapi-서버-생성-및-실행)
   - [3. 현재 서버의 API 확인 → Swagger UI, ReDoc](#3-현재-서버의-api-확인--swagger-ui-redoc)
+- [Jinja2 Templates Engine 사용하기](#jinja2-templates-engine-사용하기)
+  - [Jinja Templates?](#jinja-templates)
+  - [Jinja Template 사용 간단 예제](#jinja-template-사용-간단-예제)
+  - [@app.get에서 사용되는 Request?](#appget에서-사용되는-request)
+  - [CSS 적용을 간단하게 → MVP.css](#css-적용을-간단하게--mvpcss)
 
 ## Static pages(정적 페이지)와 Dynamic pages(동적 페이지) 알아보기
 
@@ -54,7 +59,7 @@ html, css, javascript 등으로 **미리 작성**된 **파일** 등을 서버에
 
 ---
 
-![Untitled](/src/6fbd65fd_Untitled.png)
+![Untitled](./src/6fbd65fd_Untitled.png)
 
                                                   Client 요청과 Web Server 응답 개요
 
@@ -70,13 +75,13 @@ html, css, javascript 등으로 **미리 작성**된 **파일** 등을 서버에
 
 ---
 
-![Untitled](/src/b4633ab4_Untitled.png)
+![Untitled](./src/b4633ab4_Untitled.png)
 
                      CGI = Web Server와 Program 사이 프로토콜
 
 Web Server(웹 서버)와 Application Program 사이 정보를 주고 받는 **프로토콜**이다. **CGI**를 통해 웹 서버가 Dynamic Pages(**동적 페이지**) **구성**을 할 수 있다. 프로토콜이기 때문에 어떤 언어로도 작성될 수 있다. 
 
-![Untitled](/src/5d7b16e5_Untitled.png)
+![Untitled](./src/5d7b16e5_Untitled.png)
 
                                           CGI : 클라이언트 요청에 따라 프로세스를 생성
 
@@ -88,7 +93,7 @@ CGI는 클라이언트 요청을 처리 하기 위해 매번 Process(**프로세
 
 ---
 
-![Untitled](/src/98df2a3b_Untitled.png)
+![Untitled](./src/98df2a3b_Untitled.png)
 
                                                      Java의 servlet은 Thread(스레드)로 처리해서 개선
 
@@ -100,7 +105,7 @@ CGI는 클라이언트 요청을 처리 하기 위해 매번 Process(**프로세
 
 ---
 
-![Untitled](/src/da2368f4_Untitled.png)
+![Untitled](./src/da2368f4_Untitled.png)
 
                                                                                     
 
@@ -116,11 +121,11 @@ CGI는 클라이언트 요청을 처리 하기 위해 매번 Process(**프로세
 
 ---
 
-![Untitled](/src/da2368f4_Untitled.png)
+![Untitled](./src/da2368f4_Untitled.png)
 
 그림을 보면 웹 서버(Nginx)와 WAS(WSGI)가 함께 존재하는 것을 확인할 수 있다. 왜 굳이 서버를 2개나 쓰냐 하면, 웹 서버(Nginx)를 **Reverse Proxy** 서버로서 사용할 수 있기 때문이다. Reverse Proxy 서버 사용 시 다음과 같은 장점이 있다.
 
-![Untitled](/src/9bcbd45c_Untitled.png)
+![Untitled](./src/9bcbd45c_Untitled.png)
 
                                Reverse Proxy 서버 사용 시, 네트워크 구성
 
@@ -180,13 +185,13 @@ CGI는 클라이언트 요청을 처리 하기 위해 매번 Process(**프로세
 
 	- 가장 빠른 속도를 자랑함
 
-![Untitled](/src/7ca33763_Untitled.png)
+![Untitled](./src/7ca33763_Untitled.png)
 
                                     Uvicorn
-![Untitled](/src/1d970601_Untitled.png)
+![Untitled](./src/1d970601_Untitled.png)
 
                                     Hypercorn
-![Untitled](/src/41bdfa96_Untitled.png)
+![Untitled](./src/41bdfa96_Untitled.png)
 
                                     Daphne
 
@@ -207,7 +212,7 @@ ChatGPT 피셜로 정확한 사실 관계와는 다를 수 있음.
 
 - 그래서 그런지 User Comunity도 덜 활성화 됨
 
-![Untitled](/src/517c5c39_Untitled.png)
+![Untitled](./src/517c5c39_Untitled.png)
 
                                                          차이가 좀 많이 난다 ㅎㅎ…
 
@@ -270,7 +275,8 @@ app = FastAPI()
 def read_root():
     return {"Hello": "World"}
 
-
+# {} -> Dynamic Routing(동적 라우팅)
+# 다중 지정 가능
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: Union[str, None] = None):
     return {"item_id": item_id, "q": q}
@@ -307,7 +313,7 @@ uvicorn 경로.main:app --reload
 
 - URL 주소 양식 (펼쳐 보기)
 
-	![Untitled](/src/c0ee4363_Untitled.png)
+	![Untitled](./src/c0ee4363_Untitled.png)
 
 	[http://www.codns.com/b/B05-195](http://www.codns.com/b/B05-195)
 
@@ -325,4 +331,97 @@ uvicorn 경로.main:app --reload
 
 	- ReDoc : 결과만 확인 가능
 
-![Untitled](/src/93a2fe74_Untitled.png)
+![Untitled](./src/93a2fe74_Untitled.png)
+
+</br>
+
+## Jinja2 Templates Engine 사용하기
+
+### Jinja Templates?
+
+---
+
+- 기존에 구성한 간단한 `main.py`의 응답은 JSON 객체였음
+- `HTML` 파일을 간단하게 렌더링할 수 있도록 도와주는 것이 바로 `Jinja Template`
+![image](https://github.com/woodywarhol9/algorithm-practice/assets/86637320/ee29b4cf-0378-4c60-af74-3c31fb045823) 
+- Template이랑 Temple 발음이 유사해서 Jinja라는 이름이…
+
+### Jinja Template 사용 간단 예제
+
+---
+
+- main.py에서 다음과 같은 코드를 구성하여 Jinja Template 활용
+    - Template 사용 시 기본 구조
+
+```bash
+|-- app
+|   |-- main.py
+|   `-- templates
+|       `-- item.html
+```
+
+- `main.py`
+
+```python
+# main.py
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
+from fastapi.templating import Jinja2Templates
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent # app 경로를 절대 경로로 지정
+
+app = FastAPI()
+
+templates = Jinja2Templates(directory=f"{BASE_DIR}/templates") # dir : serving할 HTML 파일 위치 -> 절대 경로 지정
+
+# 라우팅 : 요청받은 URL을 해석 하여 그에 맞는 함수를 실행하고, 결과를 리턴하는 행위
+@app.get("/items/{id}", response_class=HTMLResponse) # response_class : Jinja를 사용하니 HTML
+async def read_item(request: Request, id: str):
+    return templates.TemplateResponse("item.html", {"request": request, "id": id})
+```
+
+- `templates/item.html`
+
+```html
+<!--templates/item.html-->
+<html>
+<head>
+    <title>Item Details</title>
+</head>
+<body>
+		<!--read_item을 통해 받은 id를 H1 태그로-->
+    <h1>Item ID: {{ id }}</h1>
+</body>
+</html>
+```
+
+### @app.get에서 사용되는 Request?
+
+---
+
+- `app.get` : Type Hint를 통해서 request 여부 확인
+
+```python
+# 라우팅 : 요청받은 URL을 해석 하여 그에 맞는 함수를 실행하고, 결과를 리턴하는 행위
+@app.get("/items/{id}", response_class=HTMLResponse) # response_class : Jinja를 사용하니 HTML
+async def read_item(request: Request, id: str):
+    return templates.TemplateResponse("item.html", {"request": request, "id": id})
+```
+
+- `request` : Client - Server 사이의 요청 정보가 저장돼 있는 객체
+    - `print(dir(request))`
+
+```python
+['__abstractmethods__', '__annotations__', '__class__', '__class_getitem__', '__contains__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattribute__', '__getitem__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__iter__', '__le__', '__len__', '__lt__', '__module__', '__ne__', '__new__', '__orig_bases__', '__parameters__', '__reduce__', '__reduce_ex__', '__repr__', '__reversed__', '__setattr__', '__sizeof__', '__slots__', '__str__', '__subclasshook__', '__weakref__', '_abc_impl', '_cookies', '_form', '_get_form', '_headers', '_is_disconnected', '_is_protocol', '_query_params', '_receive', '_send', '_stream_consumed', 'app', 'auth', 'base_url', 'body', 'client', 'close', 'cookies', 'form', 'get', 'headers', 'is_disconnected', 'items', 'json', 'keys', 'method', 'path_params', 'query_params', 'receive', 'scope', 'send_push_promise', 'session', 'state', 'stream', 'url', 'url_for', 'user', 'values']
+```
+
+### CSS 적용을 간단하게 → MVP.css
+
+---
+
+- HTML 코드 수정 없이 CSS 적용해줌
+
+```html
+<link href="https://unpkg.com/mvp.css" rel="stylesheet">
+```
