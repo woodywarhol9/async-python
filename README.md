@@ -30,6 +30,12 @@
 
 </br>
 
-5. [FastAPI를 활용한 도서 정보 수집기 구성하기](5-실전프로젝트-도서정보수집기-구성)
+5. [FastAPI 활용하기](5-FastAPI-서버-구성하기/README.md)
    - `Static pages`(정적 페이지), `Dynamic pages`(동적 페이지) 차이점
    - `Web` 서버와 `App` 서버 차이점
+   - `FastAPI`와 `ASGI` 알아보기
+   - `Jinja2 Templates` 사용해보기
+
+</br>
+
+6. [FastAPI와 MongoDB를 활용한 비동기 크롤링 서버 구성](PROJECT)
